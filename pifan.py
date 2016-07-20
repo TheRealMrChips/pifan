@@ -1,13 +1,21 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # coding: UTF-8
 #
 # pifan - Controls a fan attached to a Raspberry Pi via a GPIO pin.
 #
 # Written by Richard Larson
 #
-#    Version 1.0 - 2016/07/17 - First Official Release (compatible with python 2 & 3)
+#    Version 1.0 - 2016/07/19 - First Official Release
 #
-# Licensed via the MIT license: https://github.com/TheRealMrChips/pitemp/blob/master/LICENSE Latest version available here: https://github.com/TheRealMrChips/pitemp
+#    Compatibility Note:
+#    pifan is compatible with both Python2 and Python3, but is set to execute in Python2 because
+#    that is the version installed on Raspbian by default.  To run via Python3, you will need to
+#    run the following: "sudo apt-get install python3 python3-rpi.gpio" on your Pi.
+#
+# Licensed via the MIT license: https://github.com/TheRealMrChips/pifan/blob/master/LICENSE
+# Latest version available here: https://github.com/TheRealMrChips/pifan
+#
+# For details on how to wire up a compatible cooling fan, see the README.md in the pifan GitHub repo.
 #
 import os
 import sys
