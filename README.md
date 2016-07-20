@@ -13,4 +13,13 @@ If you want to use this app, you will first need a fan attached to a pin on your
 
 ![pifan-basic-5v-100ma-fan-control-module](https://github.com/TheRealMrChips/pifan/blob/master/pifan-basic-5v-100ma-fan-control-module.png "Pifan - Basic 5v-100ma Fan Control Module")
 
+Once you have the basic circuit working in a breadboard format, you can then move it to a smaller prototype board which can then be attached across pins 2,4,6 and 8 of the Pi.  Here a a couple shots of the final setup that I ended up with after my experimentation. The soldering is a bit sloppy because I was in a hurry, but it works, and it's __small__!
+
+![pifan-controller-image-1](https://github.com/TheRealMrChips/pifan/blob/master/pifan-controller-1.jpg "Pifan - Example Controller")
+
+![pifan-controller-image-2](https://github.com/TheRealMrChips/pifan/blob/master/pifan-controller-2.jpg "Pifan - Example Controller")
+
+
+
+
 
