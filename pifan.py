@@ -10,7 +10,8 @@
 #    Compatibility Note:
 #    pifan is compatible with both Python2 and Python3, but is set to execute in Python2 because
 #    that is the version installed on Raspbian by default.  To run via Python3, you will need to
-#    run the following: "sudo apt-get install python3 python3-rpi.gpio" on your Pi.
+#    run the following: "sudo apt-get install python3 python3-rpi.gpio" on your Pi, then update
+#    the hashbang on line 1 of this file to read "#!/usr/bin/python3".
 #
 # Licensed via the MIT license: https://github.com/TheRealMrChips/pifan/blob/master/LICENSE
 # Latest version available here: https://github.com/TheRealMrChips/pifan
