@@ -4,9 +4,10 @@
 """ 
 pifan - Controls a fan attached to a Raspberry Pi via a GPIO pin.
 
-Written by Richard Larson
+Copyright (c) 2016 by Richard Larson
+Licensed via the (very permissive) MIT license.
 
-Version 2.0 - 2016/07/21 - Second Official Release (Many Changes from 1.0!!!)
+Version 2.1 - 2016/07/23 - Second Official Release, Minor Update #1
 
 Compatibility Note:
 
@@ -15,11 +16,8 @@ Compatibility Note:
 	run the following: "sudo apt-get install python3 python3-rpi.gpio" on your Pi, then update
 	the hashbang on line 1 of this file to read "#!/usr/bin/python3".
 
-Licensed via the MIT license: https://github.com/TheRealMrChips/pifan/blob/master/LICENSE
-Latest version available here: https://github.com/TheRealMrChips/pifan
-Change log is available here: https://github.com/TheRealMrChrips/blob/master/CHANGELOG
-
-For details on how to wire up a compatible cooling fan, see the README.md in the pifan GitHub repo.
+License details, changelog, details on how to wire up a compatible cooling fan, and latest version
+of the code are available at the pifan repo on Github: https://github.com/TheRealMrChips/pifan
 """
 
 import os
@@ -74,41 +72,64 @@ def parseargs():
 		choices=['run', 'stop'], 
 		help="Sets the state the fan will be left in upon exit of daemon mode. Default is Stop.")
 
+	parser.set_defaults(timestamp='iso')
+	parser.add_argument('-t','--timeStamp',
+		type=str,
+		choices=['iso','datetime','none'],
+		help="Sets timestamp formatting for status updates. ISO generates an ISO8601 timestamp, datetime outputs the date and time as separate values, none removes timestamps entirely. Default is datetime.")
+
 	parser.set_defaults(utcTime=False)
 	parser.add_argument('-u','--utcTime',
 		action="store_true",
 		help="Use UTC time on status timestamps. Default is local time.")
-
+	
 	args=parser.parse_args()
 	return args
 
 
-# get integral value of current cpu temperature...
+# return current cpu temperature in degrees Celcius...
 def getCPUTempCelcius():
 
-	temp = os.popen("vcgencmd measure_temp").readline()
-	temp = temp.replace("temp=","").replace("'C\n","")
-	return float(temp)
+	# the temperature readings from the system tend to fluctuate a bit, so we obtain
+	# our temperature by averaging a number of iterations with slight delay between...
+	iterations = 10
+	sumOfTemps = 0.0
+	
+	for x in range(0, iterations):
+		temp = os.popen("vcgencmd measure_temp").readline()
+		temp = temp.replace("temp=","").replace("'C\n","")
+		sumOfTemps += float(temp)
+		time.sleep(0.25/iterations)
+
+	# return the average...		
+	return round(float(sumOfTemps / 10.0),1)
 
 
 # get current date/time as an ISO8601 formatted string...
-def getCurrentDateTimeISO8601(utc=False):
+def getFormattedTimeStamp(utc,format):
 
-	if utc:
-		return datetime.datetime.utcnow().isoformat()
-	else:
-		return datetime.datetime.now().isoformat()
+	# if no time is needed, return empty...
+	if format == 'none': return ''
+
+	# obtain the correct timestamp (UTC or local)...
+	stamp = datetime.datetime.utcnow() if utc == True else datetime.datetime.now()
+
+	# format it according to the user's needs...
+	separator = 'T' if format == 'iso' else '\t'
+	finalStamp = stamp.strftime('%Y-%m-%d' + separator + '%H:%M:%S')
+	return finalStamp
 
 
 # emit a status record...
 def emitStatus(statusMsg,currentTemp):
 
-	printItems=[]
-	printItems.append(getCurrentDateTimeISO8601(_args.utcTime))
-	printItems.append(str(currentTemp))
-	printItems.append(statusMsg)
-	output = '\t'.join(printItems)
-	print(output)
+	stamp = getFormattedTimeStamp(_args.utcTime,_args.timeStamp)
+	temp = str(currentTemp)
+
+	if len(stamp) == 0:
+		print(temp + '\t' + statusMsg)
+	else:
+		print(stamp + '\t' + temp + '\t' + statusMsg)		
 	sys.stdout.flush()
 
 
@@ -131,7 +152,7 @@ def fanControl(pin,state):
 
 
 # cleanup routine that executes when application is terminating from daemon mode...
-def cleanupBeforeExit(signum, frame):
+def cleanupBeforeExit(signum,frame):
 
 	# always leave the fan in the desired exit mode (run or stop)...
 	finalState = _FANOFF if _args.exitAction == 'stop' else _FANON
@@ -170,10 +191,10 @@ def applyCoolingRules(args):
 # cooling routine that monitors CPU temps and automates fan control accordingly...
 def runDaemon(args):
 
-	# set up system hook to handle termination signals gracefully by running cleanup...
+	# set up system hook to handle termination signals gracefully...
 	signal.signal(signal.SIGTERM, cleanupBeforeExit)
 
-	# display a cool-mode status so users can see when app started/stopped...
+	# display a daemon-mode status so users can see when app started/stopped...
 	emitStatus('daemon-cooling-mode: started', getCPUTempCelcius())
 
 	# always start with fan OFF...
@@ -194,6 +215,7 @@ def runDaemon(args):
 	except KeyboardInterrupt:
 		cleanupBeforeExit(0,0)
 		pass
+
 
 # take appropriate action based on the command arguments...
 def processAction(args):
