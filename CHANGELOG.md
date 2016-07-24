@@ -1,5 +1,10 @@
 # pifan - Change Log
 
+##V2.1 - 7/23/2016
+* Added --timestamp parameter to allow the user to choose between formats: ISO8601, separated date and time, and no timestamp at all.
+* Fixed highly fluctuating temperature values by averaging multiple readings across a short (250ms) timespan.
+* Removed some stray mentions of the old "cool" action that were still in the code comments.
+
 ##V2.0 - 7/21/2016
 
 * Replaced `--action` parameter with `--mode` parameter for clarity/consistency.
