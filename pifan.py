@@ -92,6 +92,7 @@ def getCPUTempCelcius():
 
 	# the temperature readings from the system tend to fluctuate a bit, so we obtain
 	# our temperature by averaging a number of iterations with slight delay between...
+	measurementSeconds = 0.25
 	iterations = 10
 	sumOfTemps = 0.0
 	
@@ -99,10 +100,10 @@ def getCPUTempCelcius():
 		temp = os.popen("vcgencmd measure_temp").readline()
 		temp = temp.replace("temp=","").replace("'C\n","")
 		sumOfTemps += float(temp)
-		time.sleep(0.25/iterations)
+		time.sleep(measurementSeconds / iterations)
 
 	# return the average...		
-	return round(float(sumOfTemps / 10.0),1)
+	return round(float(sumOfTemps / iterations),1)
 
 
 # get current date/time as an ISO8601 formatted string...
