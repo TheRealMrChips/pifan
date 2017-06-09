@@ -1,11 +1,11 @@
 # pifan - Change Log
 
-##V2.1 - 7/23/2016
+## V2.1 - 7/23/2016
 * Added `--timestamp` parameter to allow the user to choose between formats: `ISO8601`, tab-separated `datetime`, and `none` at all.
 * Fixed highly fluctuating temperature values by averaging multiple readings across a short (250ms) timespan.
 * Removed some stray mentions of the old `cool` action that were still in the code comments.
 
-##V2.0 - 7/21/2016
+## V2.0 - 7/21/2016
 
 * Replaced `--action` parameter with `--mode` parameter for clarity/consistency.
 * Replaced `cool` mode with two new modes: `cron` and `daemon`.
@@ -15,7 +15,7 @@
 * Status reporting has been cleaned-up and is now consistently formatted across modes.
 * Removed `--verbose` parameter in favor of consistent verbosity across all modes.
 * 
-##v1.0 - 7/19/2016
+## v1.0 - 7/19/2016
 
 * First official release.
 * All basic functionality and actions available: `run` fan, `stop` fan, `temp` check, and continuous `cool` actions are working.
