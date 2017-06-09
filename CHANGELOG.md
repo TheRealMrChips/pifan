@@ -14,7 +14,7 @@
 * Temperatures are now managed to the tenth of a degree.  This affects the `--tempOn`, `--tempOff` parameters as well as command output.
 * Status reporting has been cleaned-up and is now consistently formatted across modes.
 * Removed `--verbose` parameter in favor of consistent verbosity across all modes.
-* 
+
 ## v1.0 - 7/19/2016
 
 * First official release.
