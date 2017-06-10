@@ -4,7 +4,7 @@
 """ 
 pifan - Controls a fan attached to a Raspberry Pi via a GPIO pin.
 
-Copyright (c) 2016 by Richard Larson
+Copyright (c) 2016-2017 by Richard Larson
 Licensed via the (very permissive) MIT license.
 
 Version 2.1 - 2016/07/23 - Second Official Release, Minor Update #1
